@@ -17,13 +17,13 @@ long int getFileLength(char * fileName){
         return -1;
     }
 
-    printf("Reading file: %s\n", fileName);
+    printf("Reading file: '%s'...\n", fileName);
     FILE * fp = fopen(fileName, "r");
     fseek(fp, 0L, SEEK_END);
     long int sz = ftell(fp);
     printf("File size is: %lu\n", sz);
 
-    printf("Successfully red %s\n", fileName);
+    printf("Successfully red file '%s'.\n", fileName);
     return sz;
 }
 
@@ -49,6 +49,9 @@ struct arrayListString * readFile(char * fileName){
     // Getting length of file
     fileLength = getFileLength(fileName);
 
+    if(fileLength == -1)
+        return NULL;
+
     // Maximum string length in file
     char str[fileLength];
 
@@ -64,19 +67,8 @@ struct arrayListString * readFile(char * fileName){
 
     // Get line-by-line
     while(fgets(str, fileLength, fp) != NULL){
-//
-//        // Allocate enough space for the red line
-//        main->value = malloc(strlen(str));
-//
-//        // Copy the line in the struct field
-//        strcpy(main->value, str);
-//
-//        // Create another chain ring
-//        main->next = malloc(sizeof(struct arrayListString));
-//
-//        // Switch to the new chain ring
-//        main = main->next;
 
+//        printf("'%s'\n", str);
         if(k == 0){
             arrayListStringItemSet(main, 0, str);
         } else {
