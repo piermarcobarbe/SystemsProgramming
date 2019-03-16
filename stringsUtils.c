@@ -75,17 +75,18 @@ char * getSubstring(char * s, int begin, int end){
 //    printf("%s - %d - %d\n", s, begin, end);
 
     if(end < begin){
-        printf("Error: end < begin.");
+        printf("Error: end < begin: %d < %d.\n", end, begin);
+
         return NULL;
     }
 
     if(s == NULL){
-        printf("Error: input string is NULL.");
+        printf("Error: input string is NULL.\n");
         return NULL;
     }
 
     if(strlen(s) < end){
-        printf("Error: end greater than strlen(s) : %d > %d.\n", end, strlen(s));
+        printf("Error: end greater than strlen(s) : %d > %lu.\n", end, strlen(s));
         return NULL;
     }
 
@@ -106,4 +107,57 @@ char * getSubstring(char * s, int begin, int end){
     return r;
 
 
+}
+
+
+int getCharFromString(char * s, char c){
+
+    for(int i = 0; i < strlen(s); i++){
+
+//        printf("Comparing %c with %c\n", *(s+i), c);
+        if(*(s+i) == c){
+            return i;
+        }
+    }
+    return -1;
+
+}
+
+
+int deleteDigits(char * s){
+
+    char * r = malloc(strlen(s));
+    int s_i = 0;
+    int r_i = 0;
+
+//    printf("%s\n", s);
+        while(*(s+s_i) != 0){
+//            printf("%c\n", *(s+s_i));
+            switch (*(s+s_i)){
+                case 48:
+                case 49:
+                case 50:
+                case 51:
+                case 52:
+                case 53:
+                case 54:
+                case 55:
+                case 56:
+                case 57:
+                    s_i++;
+                    break;
+                default:
+                    *(r+r_i) = *(s+s_i);
+                    s_i++;
+                    r_i++;
+
+            }
+        }
+        *(r+r_i) = '\0';
+
+        printf("%s\n", r);
+
+        strcpy(s, r);
+
+        return 0;
 }
