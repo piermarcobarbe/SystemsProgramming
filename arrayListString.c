@@ -41,15 +41,15 @@ void printArrayListStringItem(struct arrayListString * a){
 
     if(a->next != NULL){
         if(strlen(a->value) >= 20){
-            printf("'%s...',", getSubstring(a->value, 1, 20));
+            printf("'%s...', \n", getSubstring(a->value, 1, 20));
         } else {
-            printf("'%s',", a->value);
+            printf("'%s', \n", a->value);
         }
     } else {
         if(strlen(a->value) >= 20){
-            printf("'%s...'", getSubstring(a->value, 1, 20));
+            printf("'%s...' \n", getSubstring(a->value, 1, 20));
         } else {
-            printf("'%s'", a->value);
+            printf("'%s' \n", a->value);
         }
     }
 
@@ -116,13 +116,13 @@ void printArrayListString(struct arrayListString * a){
         printf("No arrayListString provided.\n");
     }
 
-    printf("[");
+    printf("[\n");
 
     while(a != NULL){
         printArrayListStringItem(a);
         a = a->next;
     }
-    printf("]\n");
+    printf("\n]\n");
 
     printf("\n\n");
 
@@ -330,7 +330,7 @@ struct arrayListString * arrayListStringRemoveIfMatching(char * s, struct arrayL
 
     while (a != NULL) {
 
-        printf("Checking [%llu] '%s'\n", a->id, a->value);
+//        printf("Checking [%llu] '%s'\n", a->id, a->value);
 
         if (strcmp(a->value, s) != 0) {
 
@@ -343,7 +343,7 @@ struct arrayListString * arrayListStringRemoveIfMatching(char * s, struct arrayL
             }
 
         } else {
-            printf("Removing [%llu]'%s' matching with '%s'\n", a->id, a->value, s);
+//            printf("Removing [%llu]'%s' matching with '%s'\n", a->id, a->value, s);
         }
 
         a = a->next;
