@@ -26,7 +26,8 @@ int main(int argc, char * argv[]){
     a = arrayListStringRemoveIfMatching("", a);
 
 //    printArrayListStringVerbose(a);
-    printArrayListStringVerbose(a);
+//    printArrayListStringVerbose(a);
 
+    printArrayListStringVerbose(a);
 
 }
