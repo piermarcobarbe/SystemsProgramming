@@ -41,13 +41,13 @@ void printArrayListStringItem(struct arrayListString * a){
 
     if(a->next != NULL){
         if(strlen(a->value) >= 20){
-            printf("'%s...', \n", getSubstring(a->value, 1, 20));
+            printf("'%s...', \n", getSubstringIntInt(a->value, 1, 20));
         } else {
             printf("'%s', \n", a->value);
         }
     } else {
         if(strlen(a->value) >= 20){
-            printf("'%s...' \n", getSubstring(a->value, 1, 20));
+            printf("'%s...' \n", getSubstringIntInt(a->value, 1, 20));
         } else {
             printf("'%s' \n", a->value);
         }
@@ -263,6 +263,7 @@ struct arrayListString * arrayListStringItemSet(struct arrayListString * a, int 
         a = a->next;
         k++;
     }
+
 
     if(a == NULL){
         printf("arrayListStringItemSet: OutOfBounds.\n");
