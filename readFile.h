@@ -7,5 +7,6 @@
 
 #include "arrayListString.h"
 
-struct arrayListString * readFile();
+struct arrayListString * readFile(char * fileName);
+long int getFileLength(char * fileName);
 #endif //SYSTEMSPROGRAMMING_READFILE_H
