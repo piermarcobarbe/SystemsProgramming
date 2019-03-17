@@ -5,7 +5,194 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "stringsUtils.h"
 
+
+char * appendChar(char * s, char c){
+//    printf("%lu\n", strlen(s)+1);
+    char * r = malloc(strlen(s)+1);
+//    printf("s:%s", s);
+//    printf("r:'%s'", r);
+    strcpy(r, s);
+
+//    printf("r:'%s'", r);
+
+    r[strlen(s)] = c;
+//    printf("r:'%s'", r);
+    r[strlen(s)+1] = '\0';
+//    printf("r:'%s'", r);
+    return r;
+}
+
+char * getSusbstringCharP(char * s, char * in){
+
+//    printf("%s - %s\n", s, in);
+
+    int i_s = 0;
+    int i_in = 0;
+
+    while(i_s < strlen(s)){
+//        printf("[%lu]%s\n", strlen(s+i_s), s+i_s);
+
+        while(*(s + i_s) == *(in + i_in)){
+
+//            printf("[%d]%c|[%d]%c\n", i_s, *(s + i_s),i_in, *(in + i_in));
+
+
+
+            i_s++;
+            i_in++;
+
+        }
+
+        if(i_in == strlen(in)){
+//            printf("R:%s\n", s + i_s);
+            return s + i_s -i_in;
+        } else {
+            i_in = 0;
+        }
+
+
+
+        i_s++;
+
+    }
+
+    return NULL;
+
+}
+
+
+char * getSubstringCharPCharP(char * s, char * begin, char * end){
+    char * start = getSusbstringCharP(s, begin);
+    char * finish = getSusbstringCharP(start, end);
+
+    finish++;
+
+//    printf("start:%s\nfinish:%s\n", start, finish);
+
+    int count = 0;
+    char * m = start;
+
+    while(start != finish){
+        count++;
+        start++;
+    }
+
+    start = m;
+//    printf("diff:%d\n", count);
+
+    char * r = malloc(count+1);
+
+    strncpy(r, start, count);
+
+    r[count+1] = '\0';
+//    printf("%s\n", r);
+
+    return r;
+
+}
+
+char * replaceString(char * s, char * out, char * in){
+
+//    printf("out: %lu - '%s'\n", strlen(out), out);
+//    printf("in: %lu - '%s'\n", strlen(in), in);
+
+    if(strlen(out) == 0){
+        printf("Empty out parameter.\n");
+        return NULL;
+    }
+
+
+    int occurrences = 0;
+    char * nextOccurrence = getSusbstringCharP(s, out);
+
+    while(nextOccurrence != NULL){
+//        printf("%s\n", nextOccurrence);
+        occurrences++;
+        nextOccurrence = getSusbstringCharP(nextOccurrence+strlen(out), out);
+    }
+
+
+
+//    printf("Found %d occurrences.\nCalculating output size...", occurrences);
+
+    int retSize = strlen(s);
+
+//    printf("strlen(s): %d\n", retSize);
+
+    int occurrencesDiff = strlen(in) - strlen(out);
+
+    if(occurrences > 0){
+        int delta = occurrencesDiff * occurrences;
+        retSize += delta;
+    }
+
+//    printf(" %d bytes.\n", retSize);
+
+    char * r = malloc(retSize+1);
+
+    nextOccurrence = getSusbstringCharP(s, out);
+
+    int i_s = 0;
+    int i_r = 0;
+    int i_in = 0;
+
+    while(nextOccurrence != NULL){
+        while((s+i_s) != nextOccurrence){
+
+//            printf("%s\n", r);
+            r[i_r] = s[i_s];
+            i_s++;
+            i_r++;
+
+        }
+
+//        printf("(before)R:%s\nFound point:'%s'\n", r, s+i_s);
+
+        while(*(in + i_in) != 0){
+            r[i_r] = in[i_in];
+            i_in++;
+            i_r++;
+        }
+
+        i_in = 0;
+//        printf("(after)R:%s\n\n", r);
+
+        i_s += strlen(out);
+        nextOccurrence = getSusbstringCharP(nextOccurrence+strlen(out), out);
+    }
+
+    i_s += strlen(out)-1;
+
+    while(*(s + i_s) != 0){
+        r[i_r] = s[i_s];
+        i_s++;
+        i_r++;
+    }
+
+    *(r+i_r) = '\0';
+
+//    printf("R:%s\n", r);
+
+    return r;
+}
+
+char * replaceChar(char * s, char out, char in){
+    char * r = malloc(strlen(s));
+    int count = 0;
+
+    for(int i = 0; i < strlen(s); i++){
+        if(s[i] == out){
+            r[count] = in;
+        } else {
+            r[count] = s[i];
+        }
+        count ++;
+    }
+
+    return r;
+}
 
 char * flipLine(char * s){
 
@@ -70,7 +257,7 @@ char * removeFirstChar(char * s, char c){
 }
 
 
-char * getSubstring(char * s, int begin, int end){
+char * getSubstringIntInt(char * s, int begin, int end){
 
 //    printf("%s - %d - %d\n", s, begin, end);
 
@@ -122,6 +309,7 @@ int getCharFromString(char * s, char c){
     return -1;
 
 }
+
 
 
 int deleteDigits(char * s){
