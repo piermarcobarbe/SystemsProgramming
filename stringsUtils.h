@@ -16,6 +16,8 @@ char * removeFirstChar(char * s, char c);
 char * getSubstringIntInt(char * s, int begin, int end);
 int getCharFromString(char * s, char c);
 int deleteDigits(char * s);
+int replaceStringInPlace(char * s, char * r);
+int removeCharInPlace(char * s, char c);
 
 
 #endif //SYSTEMSPROGRAMMING_STRINGSUTILS_H

@@ -31,12 +31,12 @@ char * getSusbstringCharP(char * s, char * in){
     int i_s = 0;
     int i_in = 0;
 
-    while(i_s < strlen(s)){
+    while(i_s <= strlen(s)){
 //        printf("[%lu]%s\n", strlen(s+i_s), s+i_s);
 
-        while(*(s + i_s) == *(in + i_in)){
+        while(*(s + i_s) == *(in + i_in) && i_in < strlen(in) && i_s < strlen(s)){
 
-//            printf("[%d]%c|[%d]%c\n", i_s, *(s + i_s),i_in, *(in + i_in));
+//            printf("[%d]'%c'|[%d]'%c'\n", i_s, *(s + i_s),i_in, *(in + i_in));
 
 
 
@@ -47,7 +47,7 @@ char * getSusbstringCharP(char * s, char * in){
 
         if(i_in == strlen(in)){
 //            printf("R:%s\n", s + i_s);
-            return s + i_s -i_in;
+            return s + i_s - i_in;
         } else {
             i_in = 0;
         }
@@ -64,11 +64,22 @@ char * getSusbstringCharP(char * s, char * in){
 
 
 char * getSubstringCharPCharP(char * s, char * begin, char * end){
+
+
     char * start = getSusbstringCharP(s, begin);
+
+
+    if(start == NULL){
+        printf("Could not find '%s' in '%s'\n", begin, s);
+        return NULL;
+    }
+
     char * finish = getSusbstringCharP(start, end);
 
-    finish++;
-
+    if(finish == NULL){
+        printf("Could not find '%s' in '%s'\n", end, start);
+        return NULL;
+    }
 //    printf("start:%s\nfinish:%s\n", start, finish);
 
     int count = 0;
@@ -81,6 +92,8 @@ char * getSubstringCharPCharP(char * s, char * begin, char * end){
 
     start = m;
 //    printf("diff:%d\n", count);
+
+    count += strlen(end);
 
     char * r = malloc(count+1);
 
@@ -100,15 +113,16 @@ char * replaceString(char * s, char * out, char * in){
 
     if(strlen(out) == 0){
         printf("Empty out parameter.\n");
-        return NULL;
+        return s;
     }
+
 
 
     int occurrences = 0;
     char * nextOccurrence = getSusbstringCharP(s, out);
 
+//    printf("nextOccurrence:%s\n", nextOccurrence);
     while(nextOccurrence != NULL){
-//        printf("%s\n", nextOccurrence);
         occurrences++;
         nextOccurrence = getSusbstringCharP(nextOccurrence+strlen(out), out);
     }
@@ -119,6 +133,7 @@ char * replaceString(char * s, char * out, char * in){
 
     int retSize = strlen(s);
 
+
 //    printf("strlen(s): %d\n", retSize);
 
     int occurrencesDiff = strlen(in) - strlen(out);
@@ -127,10 +142,11 @@ char * replaceString(char * s, char * out, char * in){
         int delta = occurrencesDiff * occurrences;
         retSize += delta;
     }
+//    retSize++;
 
 //    printf(" %d bytes.\n", retSize);
 
-    char * r = malloc(retSize+1);
+    char * r = malloc(retSize);
 
     nextOccurrence = getSusbstringCharP(s, out);
 
@@ -152,6 +168,7 @@ char * replaceString(char * s, char * out, char * in){
 
         while(*(in + i_in) != 0){
             r[i_r] = in[i_in];
+//            printf("r:%s\n", r);
             i_in++;
             i_r++;
         }
@@ -163,17 +180,17 @@ char * replaceString(char * s, char * out, char * in){
         nextOccurrence = getSusbstringCharP(nextOccurrence+strlen(out), out);
     }
 
-    i_s += strlen(out)-1;
+//    printf("r2: '%s'\n", r);
 
-    while(*(s + i_s) != 0){
+    while((*(s + i_s) != 0)){
         r[i_r] = s[i_s];
+//        printf("R:'%s'\n", r);
         i_s++;
         i_r++;
     }
 
     *(r+i_r) = '\0';
 
-//    printf("R:%s\n", r);
 
     return r;
 }
@@ -237,8 +254,8 @@ char * removeFirstChar(char * s, char c){
     int count = 0;
     int skip = 0;
 
-    for(int i = 0; i < strlen(s); i++){
-
+    for(int i = 0; i <= strlen(s); i++){
+//        printf("r:%s\n", r);
         if(skip == 0){
             if(s[i] != c){
                 r[count] = s[i];
@@ -343,9 +360,70 @@ int deleteDigits(char * s){
         }
         *(r+r_i) = '\0';
 
-        printf("%s\n", r);
+//        printf("%s\n", r);
 
         strcpy(s, r);
 
         return 0;
+}
+
+int replaceStringInPlace(char * s, char * r){
+
+    if(strlen(r) > strlen(s)){
+        printf("replaceStringInPlace: Could not copy %lu bytes in %lu bytes.\n", strlen(r), strlen(s));
+        return -1;
+    }
+
+    int i = 0;
+
+    printf("Before: '%s'", s);
+
+    while(s[i] != 0){
+        printf("%d\n", s[i]);
+        s[i] = 0;
+        i++;
+    }
+
+    i = 0;
+
+    while(r[i] != 0){
+        s[i] = r[i];
+        printf("Copied '%c'", s[i]);
+        i++;
+    }
+
+    printf("After: '%s'\n", s);
+    return i;
+
+}
+
+int removeCharInPlace(char * s, char c){
+
+    if(s == NULL){
+        printf("replaceCharInPlace: input string is null.\n");
+        return -1;
+    }
+
+    if(!(c)){
+        printf("replaceCharInPlace: input char is null.\n");
+        return -2;
+    }
+
+    int i = 0;
+    int j = 0;
+    int occurrences = 0;
+    while(s[i] != 0){
+        if(s[i] == c){
+            printf("%c\n", s[i]);
+            occurrences++;
+            j = i;
+            while(s[j] != 0){
+                s[j] = s[j+1];
+                j++;
+            }
+        }
+        i++;
+    }
+
+    return occurrences;
 }
