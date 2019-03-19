@@ -7,11 +7,12 @@
 #include "readFile.h"
 #include "stringsUtils.h"
 #include "readFile.h"
+#include <strings.h>
 
 int main(){
 
-    char * targetFilename = "./tests/test3.txt";
-    char * modifiedFilename = "./tests/test3_modified.txt";
+    char * targetFilename = "./txts/test3.txt";
+    char * modifiedFilename = "./txts/test3_modified.txt";
 
     wipeFile(modifiedFilename);
 
@@ -26,14 +27,10 @@ int main(){
     a = readFile(modifiedFilename);
     l = arrayListStringItemGet(a, 17);
     theString = l->value;
-//    printf("theString: %s\n", theString);
     theString = replaceString(theString, " ", " - ");
-//    printf("theString: %s\n", theString);
     arrayListStringItemSet(a, 17, theString);
-//    printArrayListString(a);
     wipeFile(modifiedFilename);
     struct arrayListString * b = readFile(modifiedFilename);
-//    printArrayListString(b);
     writeFileArrayListString(modifiedFilename, "a+", a);
 
     a = readFile(modifiedFilename);
@@ -67,7 +64,67 @@ int main(){
     writeFileArrayListString(modifiedFilename, "a+", a);
 
 
+    a = readFile(modifiedFilename);
+    l = arrayListStringItemGet(a, 9);
+    theString = l->value;
 
+    theString = removeChar(theString, '\n');
+
+    char buffer[strlen(theString)];
+
+    strcpy(buffer, theString);
+
+    int res = replaceStringInPlace(buffer, "Hey, this is the brand new string!\n");
+
+
+    if(res < 0){
+        printf("Could not replace the string '%s'", buffer);
+        return -1;
+    }
+
+    printf("Successfully replaced the old string with '%s'.\n", buffer);
+    arrayListStringItemSet(a, 9, buffer);
+    wipeFile(modifiedFilename);
+    writeFileArrayListString(modifiedFilename, "a+", a);
+
+    a = readFile(modifiedFilename);
+    l = arrayListStringItemGet(a, 7);
+    theString = l->value;
+    strcpy(buffer, "");
+    strcpy(buffer, theString);
+    char * veryLongString = "A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. A very long string. ";
+
+    res = replaceStringInPlace(buffer, veryLongString);
+
+    if(res >= 0){
+        printf("replaceStringInPlace should have failed.\n");
+        return -1;
+    }
+
+    theString = replaceString(theString, theString, "test passed.\n");
+    arrayListStringItemSet(a, 7, theString);
+    wipeFile(modifiedFilename);
+    writeFileArrayListString(modifiedFilename, "a+",  a);
+
+
+    a = readFile(modifiedFilename);
+    l = arrayListStringItemGet(a, 5);
+    theString = l->value;
+    strcpy(buffer, "");
+    strcpy(buffer, theString);
+    res = replaceCharInPlace(buffer, 'a');
+
+    if(res < 0){
+        printf("replaceCharInPlace failed. It should not have.\n");
+    }
+
+//    strcpy(theString, buffer);
+
+    printf("%d occurrences of '%c' in '%s'.\n", res, 'a', theString);
+    arrayListStringItemSet(a, 5, buffer);
+    printArrayListStringItem(arrayListStringItemGet(a, 5));
+    wipeFile(modifiedFilename);
+    writeFileArrayListString(modifiedFilename, "a+", a);
 
 
 }
