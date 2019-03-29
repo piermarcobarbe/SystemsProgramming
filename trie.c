@@ -33,7 +33,11 @@ void printTrie(struct Trie * t){
 
     if(t->previous && t->next){
 
-        printf("%c ->|%c|-> %c\n", t->previous->c, t->c, t->next->c);
+        printf("%c ->|%c", t->previous->c, t->c);
+        if(t->isAKey == 1){
+            printf("*");
+        }
+        printf("|-> %c\n", t->next->c);
 
 
 
@@ -178,56 +182,51 @@ int existsInVerticalLayer(struct Trie * t, char c){
 }
 
 int insertString(struct Trie * t, char * s){
-//    printf("\n");
-    if(*(s) == 0) {
-//        t->isAKey = 1;
+
+    printf("Trie: '%c', s: %s\n", t->c, s);
+    if(t == NULL){
         return 0;
     }
-    printf("insertString: '%c', '%s'\n",  t->c, s);
-    if(strlen(s) == 0) return 0;
 
-    struct Trie * begin = goToTop(t);
-    struct Trie * end = goToBottom(t);
-    struct Trie * it = begin;
-
-    while(it != end){
-        if(it->c == *s) {
-            printf("%c exists. \n", *s);
-            if (*(s+1) == 0) {
-                printf("RIP\n");
-                return 0;
-            }
-            printf("going to '%c'\n", *(s + 1));
-            if(it == it->next){
-                putAside(it, newTrie(*(s + 1)));
-            }
-            return insertString(it->next, s + 1);
-        }
-
-        it = it->down;
+    if(strcmp(s, "") == 0){
+        t->previous->isAKey = 1;
+        return 0;
     }
-    printf("At the end:\n%c - %c\n", it->c, *s);
 
-    if(it->c == *(s)){
-        printf("%c exists yet in trie.\n", *s);
-        return insertString(it->next, s+1);
+    if(t == t->next){
+        printf("t == t->next, ");
+
+        if(*s == t->c){
+            printf("*s == t->c\n");
+            putAside(t, newTrie(*(s+1)));
+            insertString(t->next, s+1);
+        } else {
+            printf("*s != t->c\n");
+            append(t, newTrie(*s));
+            insertString(t->down, s);
+        }
 
     } else {
-
-        printf("%c did not exist. ", *s);
-        if(it != it->next){
-            printf("append.\n");
-            append(it, newTrie(*s));
-            return insertString(it->down, s+1);
+        printf("t != t->next, ");
+        if(*s == t->c){
+            printf("*s == t->c, ");
+            insertString(t->next, s+1);
         } else {
-            printf("put aside.\n");
-            putAside(it, newTrie(*s));
-            return insertString(it->next, s+1);
+            printf("*s != t->c, ");
+            if(t != t->down){
+                printf("t != t->down\n");
+                insertString(t->down, s);
+            } else {
+                printf("t == t->down\n");
+                append(t, newTrie(*s));
+                insertString(t->down, s);
+            }
         }
-
     }
 
 
+
+    return 0;
 }
 
 void navigateTrie(struct Trie * t){
