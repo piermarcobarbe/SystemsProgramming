@@ -17,6 +17,8 @@ typedef struct arrayListString {
 } arrayListString;
 
 
+int arrayListStringSize(struct arrayListString * a);
+struct arrayListString * newArrayListStringItemVoid();
 int arrayListStringItemPush(char * s, arrayListString * a);
 void printArrayListString(struct arrayListString * a);
 
@@ -37,5 +39,7 @@ struct arrayListString * arrayListStringApplyCharP(char * (*function_ptr)(char *
 struct arrayListString * arrayListStringApplyCharPChar(char * (*function_ptr)(char *, char), struct arrayListString * a, char charForApply);
 
 struct arrayListString * arrayListStringRemoveIfMatching(char * s, struct arrayListString * a);
+
+struct arrayListString * arrayListStringSplit(struct arrayListString * a, char * sep);
 
 #endif //SYSTEMSPROGRAMMING_ARRAYLIST_H

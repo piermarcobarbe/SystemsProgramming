@@ -13,7 +13,24 @@
 //
 // Created by Piermarco Barbè on 2019-02-26.
 
+int arrayListStringSize(struct arrayListString * a){
+    int r = 1;
 
+//    if(a->value == 0) return 0;
+
+    while(a->next != 0){
+        r++;
+        a = a->next;
+    }
+    return r;
+}
+
+struct arrayListString * newArrayListStringItemVoid(){
+    struct arrayListString * _new = malloc(sizeof(struct arrayListString));
+    _new->value = 0;
+    _new->next = 0;
+    return _new;
+}
 
 void printArrayListStringItemVerbose(struct arrayListString * a){
     if(a == NULL){
@@ -40,14 +57,14 @@ void printArrayListStringItem(struct arrayListString * a){
 
 
     if(a->next != NULL){
-        if(strlen(a->value) >= 20){
-            printf("'%s...', \n", getSubstringIntInt(a->value, 1, 20));
+        if(strlen(a->value) >= 50){
+            printf("'%s...', \n", getSubstringIntInt(a->value, 1, 50));
         } else {
             printf("'%s', \n", a->value);
         }
     } else {
-        if(strlen(a->value) >= 20){
-            printf("'%s...' \n", getSubstringIntInt(a->value, 1, 20));
+        if(strlen(a->value) >= 50){
+            printf("'%s...' \n", getSubstringIntInt(a->value, 1, 50));
         } else {
             printf("'%s' \n", a->value);
         }
@@ -131,32 +148,18 @@ void printArrayListString(struct arrayListString * a){
 
 struct arrayListString * arrayListStringMatch(struct arrayListString * a, char * t){
 
-    struct arrayListString * last = malloc(sizeof(struct arrayListString));
+    struct arrayListString * last = newArrayListStringItemVoid();
     struct arrayListString * ret = last;
 
-    int maxStringLen = 0;
-    int stringNumber = 0;
 
-    while(a->value != NULL){
-
-        if (strlen(a->value) > maxStringLen){
-            maxStringLen = strlen(a->value)+1;
-        }
-        stringNumber ++;
-
-
-
-        a = a->next;
-    }
-
-
-    last = newArrayListString(stringNumber, maxStringLen);
-
-    while(a->value != NULL) {
+    while(a != NULL) {
 
         if (strstr(a->value, t)) {
             arrayListStringItemPush(a->value, last);
         }
+//        else {
+//            printf("%s not matching with %s\n", a->value, t);
+//        }
         a = a->next;
     }
 
@@ -212,6 +215,13 @@ int arrayListStringItemPush(char * s, arrayListString * a){
 
     int k = 1;
 
+    if(a->value == NULL){
+        a->value = malloc(strlen(s)+1);
+        strcpy(a->value, s);
+        a->value[strlen(s)+1] = 0;
+        return k;
+    }
+
     struct arrayListString * prev;
 
     while(a->next != NULL){
@@ -223,6 +233,7 @@ int arrayListStringItemPush(char * s, arrayListString * a){
         k++;
 
     }
+    k++;
 
 //    printf("Last is %llu\n", a->id);
 
@@ -236,13 +247,18 @@ int arrayListStringItemPush(char * s, arrayListString * a){
 
     a->next = n;
     n->next = NULL;
-    return k-1;
+//    printf("%d\n", k);
+    return k;
 }
 
 
 struct arrayListString * arrayListStringItemGet(struct arrayListString * a, int pos){
+
+    if(pos <= 0)
+        return 0;
+
     int k = 1;
-    while(k < pos && a != NULL){
+    while(k <= pos && a != NULL){
         a = a->next;
         k++;
     }
@@ -258,8 +274,11 @@ struct arrayListString * arrayListStringItemGet(struct arrayListString * a, int 
 
 }
 struct arrayListString * arrayListStringItemSet(struct arrayListString * a, int pos, char * s) {
+
+
+
     int k = 1;
-    while(k < pos && a != NULL){
+    while(k <= pos && a != NULL){
         a = a->next;
         k++;
     }
@@ -283,15 +302,22 @@ struct arrayListString * arrayListStringItemSet(struct arrayListString * a, int 
 
 struct arrayListString * arrayListStringItemPop(struct arrayListString * a){
     struct arrayListString * prev;
+    struct arrayListString * result;
+
     while(a->next != NULL){
+//        printf("%s\n", a->value);
         prev = a;
         a = a->next;
     }
 
-    struct arrayListString * r = prev->next;
+    result = prev->next;
     prev->next = NULL;
 
-    return r;
+    if(result == 0){
+        return prev;
+    }
+
+    return result;
 
 }
 
@@ -355,4 +381,53 @@ struct arrayListString * arrayListStringRemoveIfMatching(char * s, struct arrayL
     last->next = NULL;
 
     return head;
+}
+
+struct arrayListString * arrayListStringSplit(struct arrayListString * a, char * sep){
+    struct arrayListString * res = newArrayListStringItemVoid();
+    char * s;
+    int c = 1;
+    int l = 1;
+
+    while(a != 0){
+        s = a->value;
+
+//        printf("%s\n", s);
+        s = getSubstringCharP(s, sep);
+
+        while(s){
+
+            l = c;
+
+            c = s - a->value;
+
+//            printf("Subs = '%s'\n", getSubstringIntInt(a->value, l, c));
+
+            arrayListStringItemPush(getSubstringIntInt(a->value, l, c), res);
+//            printf("%s\n", s);
+
+            s = getSubstringCharP(s+1, sep);
+
+
+            c+=strlen(sep)+1;
+        }
+
+        l = c;
+        c = strlen(a->value);
+//        printf("Subs = '%s'\n", getSubstringIntInt(a->value, l, c));
+        arrayListStringItemPush(getSubstringIntInt(a->value, l, c), res);
+
+
+
+        c = 1;
+        l = 1;
+
+
+        a = a->next;
+    }
+//    res = a;
+
+    return res;
+
+
 }
