@@ -212,7 +212,7 @@ int main(){
     assert(res == 3);
     assert(strcmp(buf, "3abc3def3ghi") == 0);
 
-    
+
 
     return 0;
 }

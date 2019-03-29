@@ -24,7 +24,7 @@ char * appendChar(char * s, char c){
     return r;
 }
 
-char * getSusbstringCharP(char * s, char * in){
+char * getSubstringCharP(char * s, char * in){
 
 //    printf("%s - %s\n", s, in);
 
@@ -66,7 +66,7 @@ char * getSusbstringCharP(char * s, char * in){
 char * getSubstringCharPCharP(char * s, char * begin, char * end){
 
 
-    char * start = getSusbstringCharP(s, begin);
+    char * start = getSubstringCharP(s, begin);
 
 
     if(start == NULL){
@@ -74,7 +74,7 @@ char * getSubstringCharPCharP(char * s, char * begin, char * end){
         return NULL;
     }
 
-    char * finish = getSusbstringCharP(start, end);
+    char * finish = getSubstringCharP(start, end);
 
     if(finish == NULL){
         printf("Could not find '%s' in '%s'\n", end, start);
@@ -119,12 +119,12 @@ char * replaceString(char * s, char * out, char * in){
 
 
     int occurrences = 0;
-    char * nextOccurrence = getSusbstringCharP(s, out);
+    char * nextOccurrence = getSubstringCharP(s, out);
 
 //    printf("nextOccurrence:%s\n", nextOccurrence);
     while(nextOccurrence != NULL){
         occurrences++;
-        nextOccurrence = getSusbstringCharP(nextOccurrence+strlen(out), out);
+        nextOccurrence = getSubstringCharP(nextOccurrence+strlen(out), out);
     }
 
 
@@ -148,7 +148,7 @@ char * replaceString(char * s, char * out, char * in){
 
     char * r = malloc(retSize);
 
-    nextOccurrence = getSusbstringCharP(s, out);
+    nextOccurrence = getSubstringCharP(s, out);
 
     int i_s = 0;
     int i_r = 0;
@@ -177,7 +177,7 @@ char * replaceString(char * s, char * out, char * in){
 //        printf("(after)R:%s\n\n", r);
 
         i_s += strlen(out);
-        nextOccurrence = getSusbstringCharP(nextOccurrence+strlen(out), out);
+        nextOccurrence = getSubstringCharP(nextOccurrence+strlen(out), out);
     }
 
 //    printf("r2: '%s'\n", r);
