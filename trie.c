@@ -188,36 +188,37 @@ int insertString(struct Trie * t, char * s){
         return 0;
     }
 
-    if(strcmp(s, "") == 0){
+    if(*s == 0){
+        t->next = t;
         t->previous->isAKey = 1;
         return 0;
     }
 
     if(t == t->next){
-        printf("t == t->next, ");
+//        printf("t == t->next, ");
 
         if(*s == t->c){
-            printf("*s == t->c\n");
+//            printf("*s == t->c\n");
             putAside(t, newTrie(*(s+1)));
             insertString(t->next, s+1);
         } else {
-            printf("*s != t->c\n");
+//            printf("*s != t->c\n");
             append(t, newTrie(*s));
             insertString(t->down, s);
         }
 
     } else {
-        printf("t != t->next, ");
+//        printf("t != t->next, ");
         if(*s == t->c){
-            printf("*s == t->c, ");
+//            printf("*s == t->c, ");
             insertString(t->next, s+1);
         } else {
-            printf("*s != t->c, ");
+//            printf("*s != t->c, ");
             if(t != t->down){
-                printf("t != t->down\n");
+//                printf("t != t->down\n");
                 insertString(t->down, s);
             } else {
-                printf("t == t->down\n");
+//                printf("t == t->down\n");
                 append(t, newTrie(*s));
                 insertString(t->down, s);
             }
