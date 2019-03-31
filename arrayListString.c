@@ -403,7 +403,7 @@ struct arrayListString * arrayListStringSplit(struct arrayListString * a, char *
 
 //            printf("Subs = '%s'\n", getSubstringIntInt(a->value, l, c));
 
-            arrayListStringItemPush(getSubstringIntInt(a->value, l, c), res);
+            arrayListStringItemPush(appendChar(getSubstringIntInt(a->value, l, c), '\0'), res);
 //            printf("%s\n", s);
 
             s = getSubstringCharP(s+1, sep);
@@ -415,7 +415,7 @@ struct arrayListString * arrayListStringSplit(struct arrayListString * a, char *
         l = c;
         c = strlen(a->value);
 //        printf("Subs = '%s'\n", getSubstringIntInt(a->value, l, c));
-        arrayListStringItemPush(getSubstringIntInt(a->value, l, c), res);
+        arrayListStringItemPush(appendChar(getSubstringIntInt(a->value, l, c), '\0'), res);
 
 
 
