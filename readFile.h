@@ -9,4 +9,5 @@
 
 struct arrayListString * readFile(char * fileName);
 long int getFileLength(char * fileName);
+struct arrayListString * readFileNoNewLines(char * fileName);
 #endif //SYSTEMSPROGRAMMING_READFILE_H
