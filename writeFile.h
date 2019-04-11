@@ -15,4 +15,7 @@ int writeFileCharPInt(char * filename, char * mode, char * input, int pos);
 int writeFileChar(char * filename, char * mode, char input);
 int writeFileArrayListString(char * filename, char * mode, struct arrayListString * a);
 int wipeFile(char * filename);
+int fileExists(char * filename);
+int createFile(char * filename);
+int deleteFile(char * filename);
 #endif //SYSTEMSPROGRAMMING_WRITEFILE_H
