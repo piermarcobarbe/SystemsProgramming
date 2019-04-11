@@ -1,32 +1,37 @@
+
+CFLAGS=-Wall -g
+#.PHONY: all
+
+
 .PHONY :
-	stringUtils
 	test
-	objects
+	reset
+	clean
 
-clean :
-	rm main_writeFile
-	rm stringsUtils.o
 
-objects :
-	make stringsUtils
+clean:
+	rm tests/test_arrayListString
+	rm tests/test_readFile
+	rm tests/test_stringsUtils
+	rm tests/test_writeFile
 
-stringsUtils :
-	cc -c stringsUtils.c -o stringsUtils.o
+reset:
+	rm -rf txts/
+	unzip -o txts.zip;
 
-test_stringsUtils :
-	cc stringsUtils.o tests/test_stringsUtils.c -o tests/test_stringsUtils
-	./tests/test_stringsUtils
 
-test :
-	make stringsUtils
-	make tests
-	make clean
+test:
+	cc tests/test_arrayListString.c arrayListString.c stringsUtils.c -o tests/test_arrayListString;
+	./tests/test_arrayListString;
 
-writeFile :
-	cc
+	cc tests/test_stringsUtils.c stringsUtils.c arrayListString.c -o tests/test_stringsUtils;
+	./tests/test_stringsUtils;
 
-tests :
-	make writeFile
-	cd ./tests/
-	make test_stringsUtils
-	cd ..
+	cc tests/test_readFile.c arrayListString.c stringsUtils.c readFile.c writeFile.c -o tests/test_readFile;
+	./tests/test_readFile;
+
+	cc tests/test_writeFile.c arrayListString.c stringsUtils.c readFile.c writeFile.c -o tests/test_writeFile;
+	./tests/test_writeFile;
+
+
+
