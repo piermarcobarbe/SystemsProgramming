@@ -26,21 +26,21 @@ int main(){
 
 
     char * s = "This is a test string.";
-    int r = arrayListStringItemPush(s, NULL);
+    int r = arrayListStringItemPush(0, s);
     assert(r == -1);
 
-    r = arrayListStringItemPush(NULL, s);
+    r = arrayListStringItemPush(a, 0);
     assert(r == -2);
 
-    r = arrayListStringItemPush(s, a);
+    r = arrayListStringItemPush(a, s);
     assert(r == 1);
     assert(strcmp(s, a->value) == 0);
     assert(a->next == 0);
 
-    r = arrayListStringItemPush("Another string.", a);
+    r = arrayListStringItemPush(a, "Another string.");
     assert(r == 2);
 
-    r = arrayListStringItemPush("Yet another string", a);
+    r = arrayListStringItemPush(a, "Yet another string");
     assert(r == 3);
 
 
@@ -70,12 +70,12 @@ int main(){
 
 
     s = "";
-    arrayListStringItemPush("ciao", a);
-    arrayListStringItemPush("come", a);
-    arrayListStringItemPush("stai?", a);
-    arrayListStringItemPush("", a);
-    arrayListStringItemPush("bene", a);
-    arrayListStringItemPush("grazie", a);
+    arrayListStringItemPush(a, "ciao");
+    arrayListStringItemPush(a, "come");
+    arrayListStringItemPush(a, "stai?");
+    arrayListStringItemPush(a, "");
+    arrayListStringItemPush(a, "bene");
+    arrayListStringItemPush(a, "grazie");
 
 
 //    printf("%s\n", arrayListStringItemGet(a, 2));
@@ -83,7 +83,7 @@ int main(){
     assert(strcmp(arrayListStringItemGet(a, 2)->value, "come") == 0);
     assert(strcmp(arrayListStringItemGet(a, 4)->value, "") == 0);
     assert(arrayListStringItemGet(a, -1) == 0);
-    assert(arrayListStringItemGet(a, NULL) == 0);
+    assert(arrayListStringItemGet(a, 0) == 0);
 
 
     s = "Ciao!";
@@ -97,7 +97,7 @@ int main(){
 
 
     struct arrayListString * a2 = newArrayListStringItemString("Another struct!");
-    arrayListStringItemPush(a2->value, a);
+    arrayListStringItemPush(a, a2->value);
     assert(strcmp(arrayListStringItemGet(a, arrayListStringSize(a)-1)->value, "Another struct!") == 0);
 
 
@@ -123,8 +123,8 @@ int main(){
 
     printArrayListString(a);
     struct arrayListString * splittedStrings = arrayListStringSplit(a, " ");
-    printf("SS:\n");
-    printArrayListString(splittedStrings);
+//    printf("SS:\n");
+//    printArrayListString(splittedStrings);
 
 
 

@@ -50,19 +50,19 @@ int main(){
 
 
     s = "abcd";
-    r = getSusbstringCharP(s, "ab");
+    r = getSubstringCharP(s, "ab");
     assert(strcmp(s, r) == 0);
 
-    r = getSusbstringCharP(s, "bc");
+    r = getSubstringCharP(s, "bc");
     assert(strcmp(r, "bcd") == 0);
 
-    r = getSusbstringCharP(s, "b");
+    r = getSubstringCharP(s, "b");
     assert(strcmp(r, "bcd") == 0);
 
-    r = getSusbstringCharP(s, "z");
+    r = getSubstringCharP(s, "z");
     assert(r == NULL);
 
-    r = getSusbstringCharP(s, "d");
+    r = getSubstringCharP(s, "d");
     assert(strcmp(r, "d") == 0);
 
 
