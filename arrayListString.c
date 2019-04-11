@@ -155,7 +155,7 @@ struct arrayListString * arrayListStringMatch(struct arrayListString * a, char *
     while(a != NULL) {
 
         if (strstr(a->value, t)) {
-            arrayListStringItemPush(a->value, last);
+            arrayListStringItemPush(last, a->value);
         }
 //        else {
 //            printf("%s not matching with %s\n", a->value, t);
@@ -199,7 +199,7 @@ struct arrayListString * newArrayListString(int size, int maxStringLen){
 
 }
 
-int arrayListStringItemPush(char * s, arrayListString * a){
+int arrayListStringItemPush(arrayListString * a, char * s){
 
 //    printf("Pushing.\n");
 
@@ -392,30 +392,47 @@ struct arrayListString * arrayListStringSplit(struct arrayListString * a, char *
     while(a != 0){
         s = a->value;
 
+        if(getSubstringCharP(s, sep) == 0){
+            arrayListStringItemPush(res, s);
+            a = a->next;
+            continue;
+        }
+
 //        printf("%s\n", s);
         s = getSubstringCharP(s, sep);
+
 
         while(s){
 
             l = c;
-
             c = s - a->value;
 
-//            printf("Subs = '%s'\n", getSubstringIntInt(a->value, l, c));
+            printf("GSII: %d\n", getSubstringIntInt(a->value, l, c) > 0);
 
-            arrayListStringItemPush(appendChar(getSubstringIntInt(a->value, l, c), '\0'), res);
-//            printf("%s\n", s);
+            printf("Subs = '%s'\n", getSubstringIntInt(a->value, l, c));
 
-            s = getSubstringCharP(s+1, sep);
+
+            arrayListStringItemPush(res, appendChar(getSubstringIntInt(a->value, l, c), '\0'));
+            s++;
+            printf("%s\n", s);
+
+            printf("GSCP: %s -> %s\n", s, getSubstringCharP(s, sep));
+
+            if(getSubstringCharP(s, sep) != 0){
+                s = getSubstringCharP(s, sep);
+            } else {
+                arrayListStringItemPush(res, s);
+                s = 0;
+            }
 
 
             c+=strlen(sep)+1;
         }
 
-        l = c;
-        c = strlen(a->value);
+//        l = c;
+//        c = strlen(a->value);
 //        printf("Subs = '%s'\n", getSubstringIntInt(a->value, l, c));
-        arrayListStringItemPush(appendChar(getSubstringIntInt(a->value, l, c), '\0'), res);
+//        arrayListStringItemPush(res, appendChar(getSubstringIntInt(a->value, l, c), '\0'));
 
 
 
@@ -426,6 +443,8 @@ struct arrayListString * arrayListStringSplit(struct arrayListString * a, char *
         a = a->next;
     }
 //    res = a;
+
+//    printArrayListString(res);
 
     return res;
 

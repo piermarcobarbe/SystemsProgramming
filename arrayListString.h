@@ -19,7 +19,7 @@ typedef struct arrayListString {
 
 int arrayListStringSize(struct arrayListString * a);
 struct arrayListString * newArrayListStringItemVoid();
-int arrayListStringItemPush(char * s, arrayListString * a);
+int arrayListStringItemPush(arrayListString * a, char * s);
 void printArrayListString(struct arrayListString * a);
 
 void printArrayListStringVerbose(struct arrayListString * a);
